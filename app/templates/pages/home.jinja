@@ -10,32 +10,67 @@
 
 {% block title %}
 
-    Flask Demo
+    Jaspers To Do List
 
 {% endblock %}
 
 
 {% block content %}
 
-    <h1>Flask Demo App with Turso DB and User Accounts</h1>
+    <h1>Jaspers Flask ToDo List</h1>
 
-    <p>This is a simple Flask app that connects to a Turso database to save and retrieve data, and also manage user accounts. This can be used as the basis of your web app.</p>
+    {% if session.user_id%}
+        <article>
+            <h3>Task To Do</h3>
+            {% for task in tasks%}
+                {%if not task.completed %}
+                    <ul>
+                        <p><a href="/complete/{{ task.id }} ">[]</a><strong>{{task.priority}}</strong> {{task.name}} </p>
+                    </ul>
+                {%endif%}
+            {% endfor %}
+        </article>
 
-    <p>It includes...</p>
+        
+        <article>
+            <h3>Completed Tasks</h3>
+            {% for task in tasks%}
+                {%if task.completed %}
+                    <ul>
+                        <p><a href="/uncomplete/{{ task.id }} ">[X]</a><strong>{{task.priority}}</strong> {{task.name}} </p>
+                    </ul>
+                {%endif%}
+            {% endfor %}
+        </article>
 
-    <ul>
-        <li>Example routes</li>
-        <li>Example static pages</li>
-        <li>Missing page and server error pages</li>
-        <li>DB connection and error handling</li>
-        <li>Example CRUD actions: Create and Delete</li>
-        <li>User account creation</li>
-        <li>User login / logout</li>
-        <li>Adaption of menus / routes / content based on login status</li>
-        <li>Flash messages for information</li>
-    </ul>
+        <article>
 
-    <a href="/things" role="button">Go to the Things...</a>
+            <h3>Add Task</h3>
+
+            <form action="/add" method="POST">
+
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Task Name"
+                    required
+                >
+
+                <input
+                    type="number"
+                    name="priority"
+                    min="1"
+                    max="5"
+                    placeholder="1-5"
+                    required
+                >
+
+                <button>Add Task!</button>
+
+            </form>
+
+        </article>
+    {%endif%}
 
 {% endblock %}
 
